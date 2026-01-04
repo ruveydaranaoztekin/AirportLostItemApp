@@ -3,6 +3,60 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AirportLostItemApp.MainPage">
 
-   
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            
+            <Label Text="✈️ HAVAALANI KAYIP EŞYA"
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="#1a237e"/>
+
+            <Entry x:Name="NameEntry" Placeholder="Eşya Adı (Örn: Kırmızı Bavul)" />
+            <Entry x:Name="DescEntry" Placeholder="Açıklama (Marka, Renk vb.)" />
+            <Entry x:Name="DateEntry" Placeholder="Tarih (GG.AA.YYYY)" />
+            <Entry x:Name="LocEntry"  Placeholder="Kaybolduğu Yer (Kapı No)" />
+
+            <Label Text="Aciliyet Durumu:" FontSize="14" TextColor="Gray"/>
+            <Picker x:Name="PriorityPicker" Title="Seçiniz">
+                <Picker.Items>
+                    <x:String>Normal</x:String>
+                    <x:String>ACİL</x:String>
+                </Picker.Items>
+                <Picker.SelectedIndex>0</Picker.SelectedIndex>
+            </Picker>
+
+            <Button Text="KAYDET"
+                    Clicked="OnSaveClicked"
+                    BackgroundColor="#2196F3"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    CornerRadius="10"/>
+
+            <Label Text="📋 KAYITLI EŞYALAR"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   Margin="0,20,0,5"/>
+
+            <CollectionView x:Name="ItemsList" HeightRequest="400">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Margin="0,5" Padding="10" BorderColor="LightGray" CornerRadius="5">
+                            <VerticalStackLayout>
+                                <HorizontalStackLayout Spacing="10">
+                                    <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="16" TextColor="{Binding StatusColor}"/>
+                                    <Label Text="{Binding StatusText}" TextColor="{Binding StatusColor}" FontAttributes="Italic"/>
+                                </HorizontalStackLayout>
+                                
+                                <Label Text="{Binding Description}" FontSize="12" TextColor="Gray"/>
+                                <Label Text="{Binding DateLost}" FontSize="10" HorizontalOptions="End"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
 
 </ContentPage>
