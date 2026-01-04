@@ -7,7 +7,7 @@
     Title="AirportLostItemApp">
 
     <ShellContent
-        Title="Home"
+        Title="Havaalanı Kayıp Eşya"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 
