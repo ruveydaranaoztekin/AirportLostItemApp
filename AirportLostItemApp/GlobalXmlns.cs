@@ -1,0 +1,2 @@
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/dotnet/maui/global", "AirportLostItemApp")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/dotnet/maui/global", "AirportLostItemApp.Pages")]
