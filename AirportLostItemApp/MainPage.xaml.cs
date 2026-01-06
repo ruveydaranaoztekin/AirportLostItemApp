@@ -6,7 +6,7 @@ public partial class MainPage : ContentPage
 {
     public ObservableCollection<LostItem> Items { get; set; } = new ObservableCollection<LostItem>();
     
-    // Geçici fotoğraf yolu
+    // Fotoğraf yolunu geçici tutmak için
     private string _tempPhotoPath = null;
 
     public MainPage()
@@ -15,7 +15,7 @@ public partial class MainPage : ContentPage
         ItemsList.ItemsSource = Items;
     }
 
-    // --- KAMERA BUTONU ---
+    // 1. KAMERA AÇMA BUTONU
     private async void OnTakePhotoClicked(object sender, EventArgs e)
     {
         try
@@ -41,6 +41,7 @@ public partial class MainPage : ContentPage
         }
     }
 
+    // 2. KAYDET BUTONU
     private void OnSaveClicked(object sender, EventArgs e)
     {
         if (string.IsNullOrWhiteSpace(NameEntry.Text))
@@ -49,13 +50,14 @@ public partial class MainPage : ContentPage
             return;
         }
 
-        // GÖRSEL ZEKA
+        // Görsel Zeka (Simge Seçimi)
         string girilenIsim = NameEntry.Text.ToLower();
         string secilenSimge = "📦";
         if (girilenIsim.Contains("bavul") || girilenIsim.Contains("çanta")) secilenSimge = "🧳";
         else if (girilenIsim.Contains("telefon") || girilenIsim.Contains("iphone")) secilenSimge = "📱";
         else if (girilenIsim.Contains("laptop") || girilenIsim.Contains("bilgisayar")) secilenSimge = "💻";
         else if (girilenIsim.Contains("cüzdan")) secilenSimge = "👛";
+        else if (girilenIsim.Contains("anahtar")) secilenSimge = "🔑";
 
         var newItem = new LostItem
         {
@@ -66,7 +68,7 @@ public partial class MainPage : ContentPage
             Priority = PriorityPicker.SelectedItem?.ToString() ?? "Normal",
             IsFound = false,
             Icon = secilenSimge,
-            PhotoPath = _tempPhotoPath
+            PhotoPath = _tempPhotoPath // Fotoğrafı buraya ekliyoruz
         };
 
         Items.Add(newItem);
@@ -82,6 +84,7 @@ public partial class MainPage : ContentPage
         _tempPhotoPath = null;
     }
 
+    // 3. SİLME BUTONU
     private void OnDeleteClicked(object sender, EventArgs e)
     {
         var button = (Button)sender;
@@ -89,6 +92,7 @@ public partial class MainPage : ContentPage
         Items.Remove(item);
     }
 
+    // 4. BULUNDU BUTONU
     private async void OnFoundClicked(object sender, EventArgs e)
     {
         var button = (Button)sender;
@@ -97,6 +101,25 @@ public partial class MainPage : ContentPage
         Items.Remove(item);
     }
 
+    // 5. PAYLAŞ BUTONU (Bu eksik olduğu için hata veriyordu)
+    private async void OnShareClicked(object sender, EventArgs e)
+    {
+        var button = (Button)sender;
+        var item = (LostItem)button.BindingContext;
+
+        string metin = $"📢 HAVAALANI KAYIP EŞYA\n\n" +
+                       $"📦 Eşya: {item.Icon} {item.Name}\n" +
+                       $"📍 Yer: {item.Location}\n" +
+                       $"⚠️ Durum: {item.Priority}\n";
+
+        await Share.Default.RequestAsync(new ShareTextRequest
+        {
+            Text = metin,
+            Title = "Kayıp Eşya Bildirimi"
+        });
+    }
+
+    // 6. TEMİZLE BUTONU
     private async void OnClearAllClicked(object sender, EventArgs e)
     {
         bool cevap = await DisplayAlert("Dikkat", "Tüm liste silinecek.", "Evet, Sil", "Vazgeç");
