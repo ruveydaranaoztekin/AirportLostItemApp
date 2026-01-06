@@ -2,49 +2,81 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AirportLostItemApp.ProfilePage"
-             BackgroundColor="White"
-             Title="Profilim">
+             BackgroundColor="#F0F2F5"
+             Title="Hesabım">
 
-    <VerticalStackLayout Spacing="0">
-        <Frame BackgroundColor="#1565C0" CornerRadius="0" Padding="30" HasShadow="False">
-            <VerticalStackLayout HorizontalOptions="Center" Spacing="10">
-                <Frame HeightRequest="80" WidthRequest="80" CornerRadius="40" Padding="0" IsClippedToBounds="True" HorizontalOptions="Center">
-                    <Image Source="dotnet_bot.png" Aspect="AspectFill" BackgroundColor="White"/>
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="0,0,0,30">
+
+            <Grid HeightRequest="250">
+                <BoxView>
+                    <BoxView.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="#42A5F5" Offset="0.0"/> <GradientStop Color="#1976D2" Offset="1.0"/>
+                        </LinearGradientBrush>
+                    </BoxView.Background>
+                </BoxView>
+
+                <VerticalStackLayout VerticalOptions="Center" Spacing="10">
+                    <Frame HeightRequest="90" WidthRequest="90" CornerRadius="45" Padding="0" BorderColor="White" HasShadow="False">
+                        <Label Text="👤" FontSize="50" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    </Frame>
+                    
+                    <Label Text="Misafir Kullanıcı" TextColor="White" FontAttributes="Bold" FontSize="22" HorizontalOptions="Center"/>
+                    <Label Text="İstanbul Havalimanı Yolcusu" TextColor="#E3F2FD" FontSize="14" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </Grid>
+
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10" Margin="20,-40,20,0">
+                <Frame Padding="10" CornerRadius="15" HasShadow="True" BackgroundColor="White">
+                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                        <Label Text="🔍" FontSize="24" HorizontalOptions="Center"/>
+                        <Label Text="2" FontAttributes="Bold" FontSize="20" TextColor="#1976D2" HorizontalOptions="Center"/>
+                        <Label Text="Aranıyor" FontSize="11" TextColor="Gray" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
                 </Frame>
-                <Label x:Name="UserRoleLabel" Text="YOLCU" TextColor="#E3F2FD" FontSize="12" FontAttributes="Bold" HorizontalOptions="Center"/>
-                <Label x:Name="UserNameLabel" Text="Misafir Kullanıcı" TextColor="White" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
-            </VerticalStackLayout>
-        </Frame>
-
-        <Grid ColumnDefinitions="*,*,*" Padding="20" Margin="0,-30,0,0">
-            <Frame Grid.Column="0" CornerRadius="10" Padding="10" Margin="5" BackgroundColor="White" BorderColor="LightGray">
-                <VerticalStackLayout HorizontalOptions="Center">
-                    <Label Text="0" FontSize="24" FontAttributes="Bold" TextColor="#1565C0" HorizontalOptions="Center"/>
-                    <Label Text="İlanım" FontSize="10" TextColor="Gray" HorizontalOptions="Center"/>
-                </VerticalStackLayout>
-            </Frame>
-            <Frame Grid.Column="1" CornerRadius="10" Padding="10" Margin="5" BackgroundColor="White" BorderColor="LightGray">
-                <VerticalStackLayout HorizontalOptions="Center">
-                    <Label Text="0" FontSize="24" FontAttributes="Bold" TextColor="Green" HorizontalOptions="Center"/>
-                    <Label Text="Bulunan" FontSize="10" TextColor="Gray" HorizontalOptions="Center"/>
-                </VerticalStackLayout>
-            </Frame>
-            <Frame Grid.Column="2" CornerRadius="10" Padding="10" Margin="5" BackgroundColor="White" BorderColor="LightGray">
-                <VerticalStackLayout HorizontalOptions="Center">
-                    <Label Text="5" FontSize="24" FontAttributes="Bold" TextColor="Red" HorizontalOptions="Center"/>
-                    <Label Text="Favori" FontSize="10" TextColor="Gray" HorizontalOptions="Center"/>
-                </VerticalStackLayout>
-            </Frame>
-        </Grid>
-
-        <ScrollView Padding="20">
-            <VerticalStackLayout Spacing="10">
-                <Button Text="✏️ Bilgilerimi Düzenle" Clicked="OnEditProfileClicked" BackgroundColor="#F5F5F5" TextColor="Black" HorizontalOptions="Fill"/>
-                <Button Text="🌙 Gece Modu (Aç/Kapa)" Clicked="OnDarkModeClicked" BackgroundColor="#F5F5F5" TextColor="Black" HorizontalOptions="Fill"/>
-                <Button Text="ℹ️ Uygulama Hakkında" Clicked="OnAboutClicked" BackgroundColor="#F5F5F5" TextColor="Black" HorizontalOptions="Fill"/>
                 
-                <Button Text="ÇIKIŞ YAP" Clicked="OnLogoutClicked" BackgroundColor="#FFEBEE" TextColor="Red" Margin="0,20,0,0"/>
+                <Frame Padding="10" CornerRadius="15" HasShadow="True" BackgroundColor="White">
+                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                        <Label Text="🎉" FontSize="24" HorizontalOptions="Center"/>
+                        <Label Text="1" FontAttributes="Bold" FontSize="20" TextColor="#4CAF50" HorizontalOptions="Center"/>
+                        <Label Text="Bulundu" FontSize="11" TextColor="Gray" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame Padding="10" CornerRadius="15" HasShadow="True" BackgroundColor="White">
+                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
+                        <Label Text="💬" FontSize="24" HorizontalOptions="Center"/>
+                        <Label Text="5" FontAttributes="Bold" FontSize="20" TextColor="#FFA000" HorizontalOptions="Center"/>
+                        <Label Text="Mesajlar" FontSize="11" TextColor="Gray" HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Frame>
+            </Grid>
+
+            <VerticalStackLayout Spacing="15" Padding="20,10">
+                <Label Text="İşlemlerim" FontAttributes="Bold" TextColor="#1565C0" Margin="5,0"/>
+
+                <Button Text="📋  Kayıp Başvurularım" 
+                        BackgroundColor="White" TextColor="#333" HorizontalOptions="Fill" 
+                        CornerRadius="10" HeightRequest="50" BorderColor="#E0E0E0" BorderWidth="1"
+                        Clicked="OnMyReportsClicked"/>
+
+                <Button Text="📞  Havaalanı Destek Hattı" 
+                        BackgroundColor="White" TextColor="#333" HorizontalOptions="Fill" 
+                        CornerRadius="10" HeightRequest="50" BorderColor="#E0E0E0" BorderWidth="1"
+                        Clicked="OnSupportClicked"/>
+
+                <Button Text="⚙️  Uygulama Ayarları" 
+                        BackgroundColor="White" TextColor="#333" HorizontalOptions="Fill" 
+                        CornerRadius="10" HeightRequest="50" BorderColor="#E0E0E0" BorderWidth="1"
+                        Clicked="OnSettingsClicked"/>
             </VerticalStackLayout>
-        </ScrollView>
-    </VerticalStackLayout>
+
+            <Button Text="ÇIKIŞ YAP" 
+                    BackgroundColor="#FFEBEE" TextColor="#C62828" FontAttributes="Bold"
+                    CornerRadius="25" HeightRequest="50" Margin="20,10"
+                    Clicked="OnLogoutClicked"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

@@ -1,128 +1,70 @@
-﻿using System.Collections.ObjectModel;
-
-namespace AirportLostItemApp;
+﻿namespace AirportLostItemApp;
 
 public partial class MainPage : ContentPage
 {
-    public ObservableCollection<LostItem> Items { get; set; } = new ObservableCollection<LostItem>();
-    
-    // Fotoğraf yolunu geçici tutmak için
-    private string _tempPhotoPath = null;
-
     public MainPage()
     {
         InitializeComponent();
-        ItemsList.ItemsSource = Items;
     }
 
-    // 1. KAMERA AÇMA BUTONU
-    private async void OnTakePhotoClicked(object sender, EventArgs e)
+    // Fotoğraf Ekleme Simülasyonu
+    private async void OnPhotoClicked(object sender, EventArgs e)
     {
-        try
+        string action = await DisplayActionSheet("Fotoğraf Ekle", "İptal", null, "Kamerayı Aç", "Galeriden Seç");
+        if (action == "Kamerayı Aç" || action == "Galeriden Seç")
         {
-            FileResult photo = await MediaPicker.Default.CapturePhotoAsync();
-
-            if (photo != null)
-            {
-                string localFilePath = Path.Combine(FileSystem.CacheDirectory, photo.FileName);
-                using Stream sourceStream = await photo.OpenReadAsync();
-                using FileStream localFileStream = File.OpenWrite(localFilePath);
-                await sourceStream.CopyToAsync(localFileStream);
-
-                _tempPhotoPath = localFilePath;
-
-                PreviewImage.Source = ImageSource.FromFile(localFilePath);
-                PreviewImage.IsVisible = true;
-            }
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Hata", $"Kamera açılamadı: {ex.Message}", "Tamam");
+            await DisplayAlert("Başarılı", "Fotoğraf dosyaya eklendi (Simülasyon)", "Tamam");
         }
     }
 
-    // 2. KAYDET BUTONU
-    private void OnSaveClicked(object sender, EventArgs e)
+    // Kaydetme İşlemi
+    private async void OnSaveClicked(object sender, EventArgs e)
     {
-        if (string.IsNullOrWhiteSpace(NameEntry.Text))
+        // 1. Zorunlu Alan Kontrolü
+        if (string.IsNullOrWhiteSpace(NameEntry.Text) || CategoryPicker.SelectedIndex == -1)
         {
-            DisplayAlert("Hata", "Lütfen eşya adını girin!", "Tamam");
+            await DisplayAlert("Eksik Bilgi", "Lütfen en azından 'Eşya Adı' ve 'Kategori' alanlarını doldurun.", "Tamam");
             return;
         }
 
-        // Görsel Zeka (Simge Seçimi)
-        string girilenIsim = NameEntry.Text.ToLower();
-        string secilenSimge = "📦";
-        if (girilenIsim.Contains("bavul") || girilenIsim.Contains("çanta")) secilenSimge = "🧳";
-        else if (girilenIsim.Contains("telefon") || girilenIsim.Contains("iphone")) secilenSimge = "📱";
-        else if (girilenIsim.Contains("laptop") || girilenIsim.Contains("bilgisayar")) secilenSimge = "💻";
-        else if (girilenIsim.Contains("cüzdan")) secilenSimge = "👛";
-        else if (girilenIsim.Contains("anahtar")) secilenSimge = "🔑";
+        // 2. Tüm Verileri Topla
+        string isim = NameEntry.Text;
+        string kategori = CategoryPicker.SelectedItem.ToString();
+        string marka = BrandEntry.Text ?? "-"; // Boşsa tire koy
+        
+        string kayipYeri = LostLocationEntry.Text ?? "Bilinmiyor";
+        string olasiYer = PossibleLocationEntry.Text ?? "-";
+        string tarih = DateEntry.Date.ToString("dd.MM.yyyy");
+        
+        string not = UserNoteEditor.Text ?? "Not yok";
 
-        var newItem = new LostItem
+        // 3. Özet Mesaj Oluştur
+        string ozet = $"📦 Eşya: {isim}\n" +
+                      $"🏷️ Marka: {marka}\n" +
+                      $"📍 Kayıp Yeri: {kayipYeri}\n" +
+                      $"❓ Olası Yer: {olasiYer}\n" +
+                      $"📅 Tarih: {tarih}\n" +
+                      $"📝 Not: {not}";
+
+        // 4. Onay Ver
+        bool cevap = await DisplayAlert("Kaydı Onayla", ozet + "\n\nBilgiler doğru mu?", "Evet, Gönder", "Düzenle");
+
+        if (cevap)
         {
-            Id = Items.Count + 1,
-            Name = NameEntry.Text,
-            Location = LocEntry.Text,
-            DateLost = DateEntry.Date.ToString("dd/MM/yyyy"),
-            Priority = PriorityPicker.SelectedItem?.ToString() ?? "Normal",
-            IsFound = false,
-            Icon = secilenSimge,
-            PhotoPath = _tempPhotoPath // Fotoğrafı buraya ekliyoruz
-        };
-
-        Items.Add(newItem);
-
-        if (newItem.Priority == "ACİL")
-            DisplayAlert("⚠️ DİKKAT", "Bu kayıt ACİL koduyla girildi!", "Tamam");
-
-        // Temizlik
-        NameEntry.Text = string.Empty;
-        LocEntry.Text = string.Empty;
-        PriorityPicker.SelectedIndex = -1;
-        PreviewImage.IsVisible = false;
-        _tempPhotoPath = null;
+            await DisplayAlert("İşlem Başarılı", "Kayıp bildiriminiz sisteme alındı. Eşleşme olduğunda size haber vereceğiz.", "Teşekkürler");
+            
+            // Sayfayı temizle
+            Temizle();
+        }
     }
 
-    // 3. SİLME BUTONU
-    private void OnDeleteClicked(object sender, EventArgs e)
+    void Temizle()
     {
-        var button = (Button)sender;
-        var item = (LostItem)button.BindingContext;
-        Items.Remove(item);
-    }
-
-    // 4. BULUNDU BUTONU
-    private async void OnFoundClicked(object sender, EventArgs e)
-    {
-        var button = (Button)sender;
-        var item = (LostItem)button.BindingContext;
-        await DisplayAlert("Tebrikler!", $"{item.Name} teslim edildi.", "Tamam");
-        Items.Remove(item);
-    }
-
-    // 5. PAYLAŞ BUTONU (Bu eksik olduğu için hata veriyordu)
-    private async void OnShareClicked(object sender, EventArgs e)
-    {
-        var button = (Button)sender;
-        var item = (LostItem)button.BindingContext;
-
-        string metin = $"📢 HAVAALANI KAYIP EŞYA\n\n" +
-                       $"📦 Eşya: {item.Icon} {item.Name}\n" +
-                       $"📍 Yer: {item.Location}\n" +
-                       $"⚠️ Durum: {item.Priority}\n";
-
-        await Share.Default.RequestAsync(new ShareTextRequest
-        {
-            Text = metin,
-            Title = "Kayıp Eşya Bildirimi"
-        });
-    }
-
-    // 6. TEMİZLE BUTONU
-    private async void OnClearAllClicked(object sender, EventArgs e)
-    {
-        bool cevap = await DisplayAlert("Dikkat", "Tüm liste silinecek.", "Evet, Sil", "Vazgeç");
-        if (cevap) Items.Clear();
+        NameEntry.Text = "";
+        BrandEntry.Text = "";
+        LostLocationEntry.Text = "";
+        PossibleLocationEntry.Text = "";
+        UserNoteEditor.Text = "";
+        CategoryPicker.SelectedIndex = -1;
     }
 }

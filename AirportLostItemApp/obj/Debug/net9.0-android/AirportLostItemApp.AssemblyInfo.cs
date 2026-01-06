@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AirportLostItemApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+3a60310fdc0c49e2bcdc06e6fed258ac45103753")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+035146a0ef31fba80fb14bb302dd4ae803de4108")]
 [assembly: System.Reflection.AssemblyProductAttribute("AirportLostItemApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AirportLostItemApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

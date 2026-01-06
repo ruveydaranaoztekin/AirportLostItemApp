@@ -5,13 +5,12 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
-        // BURASI BOŞ KALSIN. 
-        // MainPage ataması yapmıyoruz çünkü aşağıda Window oluşturuyoruz.
     }
 
     protected override Window CreateWindow(IActivationState activationState)
     {
-        // Uygulama direkt Menülü Yapı (AppShell) ile başlasın
-        return new Window(new AppShell());
+        // PÜF NOKTA: Buraya AppShell yerine LoginPage yazıyoruz.
+        // Böylece uygulama direkt Login ekranıyla başlıyor.
+        return new Window(new LoginPage());
     }
 }

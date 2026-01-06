@@ -2,54 +2,32 @@ namespace AirportLostItemApp;
 
 public partial class ProfilePage : ContentPage
 {
-    private bool isDarkMode = false;
-
     public ProfilePage()
     {
         InitializeComponent();
     }
 
-    // 1. Bilgileri Düzenle Butonu
-    private async void OnEditProfileClicked(object sender, EventArgs e)
+    private async void OnMyReportsClicked(object sender, EventArgs e)
     {
-        string result = await DisplayPromptAsync("Düzenle", "Adınız Soyadınız nedir?");
-        if (!string.IsNullOrWhiteSpace(result))
-        {
-            UserNameLabel.Text = result; // İsmi günceller
-            await DisplayAlert("Başarılı", "Profil bilgileriniz güncellendi.", "Tamam");
-        }
+        await DisplayAlert("Başvurularım", "Aktif olan 2 kayıp eşya ilanınız listeleniyor...", "Tamam");
     }
 
-    // 2. Gece Modu Butonu (Basit Simülasyon)
-    private void OnDarkModeClicked(object sender, EventArgs e)
+    private async void OnSupportClicked(object sender, EventArgs e)
     {
-        isDarkMode = !isDarkMode;
-        if (isDarkMode)
-        {
-            this.BackgroundColor = Color.FromArgb("#121212"); // Koyu Gri
-            DisplayAlert("Mod", "Gece modu açıldı 🌙", "Tamam");
-        }
-        else
-        {
-            this.BackgroundColor = Colors.White;
-            DisplayAlert("Mod", "Gündüz modu açıldı ☀️", "Tamam");
-        }
+        await DisplayAlert("Destek", "7/24 Çağrı Merkezi: 444 1 444\nCanlı destek bağlanıyor...", "Kapat");
     }
 
-    // 3. Hakkında Butonu
-    private async void OnAboutClicked(object sender, EventArgs e)
+    private async void OnSettingsClicked(object sender, EventArgs e)
     {
-        await DisplayAlert("Hakkında", "Havaalanı Kayıp Eşya Sistemi v1.0\nGeliştirici: [Senin Adın]", "Kapat");
+        await DisplayAlert("Ayarlar", "Bildirim ve dil ayarları sayfası.", "Tamam");
     }
 
-    // 4. Çıkış Yap Butonu
     private async void OnLogoutClicked(object sender, EventArgs e)
     {
-        bool answer = await DisplayAlert("Çıkış", "Uygulamadan çıkmak istiyor musunuz?", "Evet", "Hayır");
-        if (answer)
+        bool cevap = await DisplayAlert("Çıkış", "Hesabınızdan çıkış yapmak istiyor musunuz?", "Evet", "Hayır");
+        if (cevap)
         {
-            // Gerçek uygulamada Login sayfasına atar, şimdilik uyarı verelim
-            await DisplayAlert("Güle Güle", "Çıkış yapılıyor...", "Tamam");
+            Application.Current.MainPage = new LoginPage();
         }
     }
 }

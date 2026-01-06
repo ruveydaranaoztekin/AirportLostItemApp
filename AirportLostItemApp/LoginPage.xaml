@@ -2,26 +2,86 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AirportLostItemApp.LoginPage"
-             BackgroundColor="#1565C0"> <VerticalStackLayout VerticalOptions="Center" Spacing="20" Padding="30">
+             NavigationPage.HasNavigationBar="False">
 
-        <Label Text="✈️" FontSize="80" HorizontalOptions="Center"/>
-        <Label Text="HAVAALANI" FontSize="30" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
-        <Label Text="Kayıp Eşya Sistemi" TextColor="#E3F2FD" HorizontalOptions="Center"/>
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#0D47A1" Offset="0.1" />
+            <GradientStop Color="#42A5F5" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
 
-        <Frame CornerRadius="15" BackgroundColor="White" Padding="20" Margin="0,30,0,0">
-            <VerticalStackLayout Spacing="15">
-                <Entry Placeholder="Kullanıcı Adı" TextColor="Black"/>
-                <Entry Placeholder="Şifre" IsPassword="True" TextColor="Black"/>
+    <ScrollView>
+        <VerticalStackLayout VerticalOptions="Center" Spacing="25" Padding="30">
+
+            <Frame BackgroundColor="#20FFFFFF" CornerRadius="100" HeightRequest="180" WidthRequest="180" HorizontalOptions="Center" BorderColor="Transparent" HasShadow="False">
+                <Grid HorizontalOptions="Center" VerticalOptions="Center">
+                    <Label Text="🛫" FontSize="80" TranslationX="-20" TranslationY="-10"/>
+                    <Label Text="🔎" FontSize="100" TranslationX="10" TranslationY="10"/>
+                </Grid>
+            </Frame>
+
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Buldum!" 
+                       FontSize="45" 
+                       FontAttributes="Bold" 
+                       TextColor="White" 
+                       HorizontalOptions="Center"
+                       CharacterSpacing="1"/>
                 
-                <Button Text="GİRİŞ YAP" 
-                        Clicked="OnLoginClicked"
-                        BackgroundColor="#1565C0" 
-                        TextColor="White" 
-                        FontAttributes="Bold"/>
+                <Label Text="HAVALİMANI KAYIP EŞYA SİSTEMİ" 
+                       TextColor="#E3F2FD" 
+                       FontSize="12" 
+                       HorizontalOptions="Center"
+                       CharacterSpacing="3"
+                       Opacity="0.8"/>
             </VerticalStackLayout>
-        </Frame>
 
-        <Label Text="Şifremi Unuttum" TextColor="White" TextDecorations="Underline" HorizontalOptions="Center"/>
+            <Border StrokeShape="RoundRectangle 30" 
+                    Stroke="Transparent"
+                    BackgroundColor="White" 
+                    Padding="25"
+                    Margin="0,10,0,0">
+                <Border.Shadow>
+                    <Shadow Brush="Black" Offset="0,10" Opacity="0.2" Radius="20"/>
+                </Border.Shadow>
 
-    </VerticalStackLayout>
+                <VerticalStackLayout Spacing="20">
+                    <Label Text="Üye Girişi" TextColor="#1565C0" FontAttributes="Bold" FontSize="18" HorizontalOptions="Center"/>
+
+                    <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 15" Padding="15,5" BackgroundColor="#F5F6FA">
+                        <Grid ColumnDefinitions="30, *">
+                            <Label Text="👤" VerticalOptions="Center" FontSize="18"/>
+                            <Entry Grid.Column="1" Placeholder="Sicil No / Kullanıcı Adı" TextColor="#333" PlaceholderColor="Gray"/>
+                        </Grid>
+                    </Border>
+
+                    <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 15" Padding="15,5" BackgroundColor="#F5F6FA">
+                        <Grid ColumnDefinitions="30, *">
+                            <Label Text="🔒" VerticalOptions="Center" FontSize="18"/>
+                            <Entry Grid.Column="1" Placeholder="Şifre" IsPassword="True" TextColor="#333" PlaceholderColor="Gray"/>
+                        </Grid>
+                    </Border>
+
+                    <Button Text="SİSTEME GİRİŞ YAP" 
+                            Clicked="OnLoginClicked"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            CornerRadius="25"
+                            HeightRequest="55"
+                            Margin="0,10,0,0">
+                        <Button.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Color="#FFB300" Offset="0.0"/>
+                                <GradientStop Color="#FF8F00" Offset="1.0"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                </VerticalStackLayout>
+            </Border>
+
+            <Label Text="Şifremi Unuttum | Yardım" TextColor="White" FontSize="13" HorizontalOptions="Center" Opacity="0.9"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

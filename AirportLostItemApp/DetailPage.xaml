@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AirportLostItemApp.DetailPage"
+             Title="Eşya Detayı"
+             BackgroundColor="#F0F2F5">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="15" Padding="20">
+
+            <Frame BackgroundColor="White" CornerRadius="20" HasShadow="True" Padding="20" BorderColor="Transparent">
+                <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="Auto, *">
+                    <Frame Grid.RowSpan="3" Grid.Column="0" HeightRequest="80" WidthRequest="80" CornerRadius="40" BackgroundColor="#E3F2FD" BorderColor="Transparent" Padding="0" Margin="0,0,15,0">
+                        <Label Text="{Binding Icon}" FontSize="40" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    </Frame>
+                    
+                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding Name}" FontSize="20" FontAttributes="Bold" TextColor="#1565C0" VerticalOptions="End"/>
+                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding Category}" FontSize="14" TextColor="Gray"/>
+                    <Label Grid.Row="2" Grid.Column="1" Text="{Binding Priority}" TextColor="#C62828" FontSize="12" FontAttributes="Bold"/>
+                </Grid>
+            </Frame>
+
+            <VerticalStackLayout Spacing="10">
+                <Label Text="📍 Kaybolduğu Yer" FontAttributes="Bold" TextColor="#1565C0"/>
+                <Frame Padding="15" CornerRadius="10" BackgroundColor="White" BorderColor="Transparent">
+                    <Label Text="{Binding Location}" TextColor="#333"/>
+                </Frame>
+
+                <Label Text="📅 Kayıt Tarihi" FontAttributes="Bold" TextColor="#1565C0"/>
+                <Frame Padding="15" CornerRadius="10" BackgroundColor="White" BorderColor="Transparent">
+                    <Label Text="{Binding DateLost}" TextColor="#333"/>
+                </Frame>
+            </VerticalStackLayout>
+
+            <Frame BackgroundColor="#E8F5E9" CornerRadius="15" Padding="20" Margin="0,20,0,0" BorderColor="#4CAF50">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="👋 Bu Eşyayı Buldunuz mu?" TextColor="#2E7D32" FontAttributes="Bold" FontSize="18" HorizontalOptions="Center"/>
+                    <Label Text="Lütfen eşyayı kime teslim ettiğinizi yazın:" TextColor="#1B5E20" FontSize="12" HorizontalOptions="Center"/>
+
+                    <Entry x:Name="DeliveryLocationEntry" 
+                           Placeholder="Örn: Güvenlik, Danışma..." 
+                           BackgroundColor="White" 
+                           TextColor="Black"
+                           HeightRequest="40"/>
+
+                    <Button Text="✅ TESLİM ETTİM" 
+                            Clicked="OnFoundClicked"
+                            BackgroundColor="#4CAF50" 
+                            TextColor="White" 
+                            FontAttributes="Bold" 
+                            CornerRadius="25" 
+                            HeightRequest="50"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Button Text="Bu Eşya Benim (Talep Et)" 
+                    Clicked="OnClaimClicked"
+                    BackgroundColor="Transparent" 
+                    TextColor="#1565C0" 
+                    FontSize="12"
+                    TextDecorations="Underline"
+                    Margin="0,10,0,20"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

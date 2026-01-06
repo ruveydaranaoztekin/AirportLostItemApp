@@ -7,9 +7,10 @@ public partial class LoginPage : ContentPage
         InitializeComponent();
     }
 
+    // 'async' kelimesini kaldırdık, çünkü await kullanmıyoruz.
     private void OnLoginClicked(object sender, EventArgs e)
     {
-        // Giriş butonuna basınca Ana Uygulamaya (AppShell) geçiş yap
+        // Butona basılınca direkt Ana Menüye (AppShell) geç
         Application.Current.MainPage = new AppShell();
     }
 }
