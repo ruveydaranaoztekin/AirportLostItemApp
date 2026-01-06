@@ -4,33 +4,44 @@ public partial class DetailPage : ContentPage
 {
     private LostItem _item;
 
+    // Sayfa açılırken veri (item) alacak şekilde ayarladık
     public DetailPage(LostItem item)
     {
         InitializeComponent();
         _item = item;
-        BindingContext = item;
+        
+        // Ekrandaki {Binding ...} kodlarının bu 'item'dan veri çekmesini sağlar
+        BindingContext = _item; 
     }
 
-    // TESLİM ETME BUTONU
+    // "TESLİM ETTİM" Butonuna Basılınca
     private async void OnFoundClicked(object sender, EventArgs e)
     {
-        // Boş kontrolü
+        // Kutucuk boş mu kontrol et
         if (string.IsNullOrWhiteSpace(DeliveryLocationEntry.Text))
         {
-            await DisplayAlert("Eksik Bilgi", "Lütfen teslim ettiğiniz yeri yazın.", "Tamam");
+            await DisplayAlert("Eksik Bilgi", "Lütfen eşyayı kime veya nereye teslim ettiğinizi yazın.", "Tamam");
             return;
         }
 
-        string yer = DeliveryLocationEntry.Text;
-        await DisplayAlert("Teşekkürler!", $"'{_item.Name}' adlı eşyanın '{yer}' noktasına bırakıldığı kaydedildi.", "Süper");
+        // Kullanıcıya onay sor
+        bool answer = await DisplayAlert("Onaylıyor musunuz?", 
+            $"{_item.Name} adlı eşyayı '{DeliveryLocationEntry.Text}' konumuna bıraktığınızı onaylıyor musunuz?", 
+            "Evet", "Hayır");
         
-        // Geri dön
-        await Navigation.PopAsync();
+        if (answer)
+        {
+            // İŞLEM BAŞARILI
+            await DisplayAlert("Teşekkürler! 👏", "Bildiriminiz kaydedildi. Eşya sahibi bilgilendirilecek.", "Tamam");
+            
+            // Ana sayfaya geri dön
+            await Navigation.PopAsync();
+        }
     }
 
-    // TALEP ETME BUTONU
+    // "BU EŞYA BENİM" Linkine Basılınca
     private async void OnClaimClicked(object sender, EventArgs e)
     {
-        await DisplayAlert("Talep Alındı", "Doğrulama için lütfen Güvenlik Noktasına gidiniz.", "Tamam");
+        await DisplayAlert("Talep Alındı", "Güvenlik birimi, eşya sahipliğini doğrulamak için sistemde kayıtlı numaranızdan size ulaşacaktır.", "Tamam");
     }
 }

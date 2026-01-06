@@ -2,99 +2,86 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AirportLostItemApp.MainPage"
-             BackgroundColor="#F0F2F5"
-             Title="İlan Ekle">
+             Title="İlan Ekle"
+             BackgroundColor="#F5F5F5">
 
     <ScrollView>
-        <VerticalStackLayout Spacing="20" Padding="20,10,20,40">
+        <VerticalStackLayout Spacing="20" Padding="20">
+            
+            <Label Text="Kayıp Eşya Bildirim Formu" FontSize="24" FontAttributes="Bold" TextColor="#0056D2"/>
+            <Label Text="Lütfen eşyanın bulunmasını kolaylaştırmak için tüm detayları giriniz." FontSize="13" TextColor="Gray"/>
 
-            <Frame BackgroundColor="#1565C0" CornerRadius="15" Padding="20" HasShadow="True" BorderColor="Transparent">
-                <HorizontalStackLayout Spacing="15" VerticalOptions="Center">
-                    <Label Text="📝" FontSize="35" VerticalOptions="Center"/>
-                    <VerticalStackLayout>
-                        <Label Text="Kayıp Bildirim Formu" TextColor="White" FontAttributes="Bold" FontSize="18"/>
-                        <Label Text="Eşyanızı bulabilmemiz için detayları girin." TextColor="#E3F2FD" FontSize="12"/>
-                    </VerticalStackLayout>
-                </HorizontalStackLayout>
+            <Frame Padding="15" CornerRadius="12" BackgroundColor="White" HasShadow="True">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="📦 Eşya Bilgileri" FontAttributes="Bold" TextColor="#333"/>
+                    
+                    <Entry x:Name="NameEntry" Placeholder="Eşya Adı (Örn: Siyah Deri Cüzdan)" />
+                    
+                    <Picker x:Name="CategoryPicker" Title="Kategori Seçin">
+                        <Picker.Items>
+                            <x:String>Elektronik</x:String>
+                            <x:String>Bavul</x:String>
+                            <x:String>Pasaport</x:String>
+                            <x:String>Cüzdan/Çanta</x:String>
+                            <x:String>Giyim</x:String>
+                            <x:String>Diğer</x:String>
+                        </Picker.Items>
+                    </Picker>
+
+                    <Grid ColumnDefinitions="*,*">
+                         <Label Text="Aciliyet:" VerticalOptions="Center"/>
+                         <HorizontalStackLayout Grid.Column="1" Spacing="10">
+                             <RadioButton x:Name="RadioNormal" Content="Normal" IsChecked="True"/>
+                             <RadioButton x:Name="RadioUrgent" Content="ACİL" TextColor="Red"/>
+                         </HorizontalStackLayout>
+                    </Grid>
+                </VerticalStackLayout>
             </Frame>
 
-            <Border StrokeShape="RoundRectangle 15" StrokeThickness="0" BackgroundColor="White" Padding="15">
+            <Frame Padding="15" CornerRadius="12" BackgroundColor="White" HasShadow="True">
                 <VerticalStackLayout Spacing="10">
-                    <Label Text="📦 Eşya Bilgileri" TextColor="#1565C0" FontAttributes="Bold"/>
+                    <Label Text="📍 Konum ve Zaman" FontAttributes="Bold" TextColor="#333"/>
                     
-                    <Frame Padding="0" BorderColor="#E0E0E0" CornerRadius="10" BackgroundColor="#FAFAFA">
-                        <Entry x:Name="NameEntry" Placeholder="Eşya Nedir? (Örn: iPhone 13)" TextColor="Black" Margin="10,0"/>
-                    </Frame>
-
-                    <Frame Padding="0" BorderColor="#E0E0E0" CornerRadius="10" BackgroundColor="#FAFAFA">
-                        <Picker x:Name="CategoryPicker" Title="Kategori Seçiniz" TextColor="Black" TitleColor="Gray" Margin="10,0">
-                            <Picker.Items>
-                                <x:String>Elektronik</x:String>
-                                <x:String>Bavul / Çanta</x:String>
-                                <x:String>Pasaport / Kimlik</x:String>
-                                <x:String>Mücevher / Saat</x:String>
-                                <x:String>Giyim</x:String>
-                                <x:String>Diğer</x:String>
-                            </Picker.Items>
-                        </Picker>
-                    </Frame>
+                    <Entry x:Name="LocationEntry" Placeholder="Nerede Kayboldu? (Örn: Gate A1, Tuvalet)" />
                     
-                    <Frame Padding="0" BorderColor="#E0E0E0" CornerRadius="10" BackgroundColor="#FAFAFA">
-                        <Entry x:Name="BrandEntry" Placeholder="Marka / Model" TextColor="Black" Margin="10,0"/>
-                    </Frame>
+                    <Label Text="Kaybolma Tarihi:" FontSize="12" TextColor="Gray"/>
+                    <DatePicker x:Name="DateInput" Format="dd/MM/yyyy" TextColor="#333"/>
                 </VerticalStackLayout>
-            </Border>
+            </Frame>
 
-            <Border StrokeShape="RoundRectangle 15" StrokeThickness="0" BackgroundColor="White" Padding="15">
+            <Frame Padding="15" CornerRadius="12" BackgroundColor="White" HasShadow="True">
                 <VerticalStackLayout Spacing="10">
-                    <Label Text="📍 Kayıp Detayları" TextColor="#1565C0" FontAttributes="Bold"/>
+                    <Label Text="📝 Detaylar &amp; Özellikler" FontAttributes="Bold" TextColor="#333"/>
+                    
+                    <Editor x:Name="DescriptionEditor" 
+                            Placeholder="Ayırt edici özellikleri neler? (Örn: Sol fermuarı bozuk, üzerinde 'Can' yazıyor, ekranı çatlak...)" 
+                            HeightRequest="100" 
+                            AutoSize="TextChanges"/>
 
-                    <Frame Padding="0" BorderColor="#E0E0E0" CornerRadius="10" BackgroundColor="#FAFAFA">
-                        <Entry x:Name="LostLocationEntry" Placeholder="Kesin Kaybolduğu Yer" TextColor="Black" Margin="10,0"/>
-                    </Frame>
-
-                    <Frame Padding="0" BorderColor="#E0E0E0" CornerRadius="10" BackgroundColor="#FAFAFA">
-                        <Entry x:Name="PossibleLocationEntry" Placeholder="Başka nerede olabilir?" TextColor="Black" Margin="10,0"/>
-                    </Frame>
-
-                    <Label Text="Kaybolduğu Tarih:" TextColor="Gray" FontSize="12" Margin="5,0"/>
-                    <Frame Padding="0" BorderColor="#E0E0E0" CornerRadius="10" BackgroundColor="#FAFAFA">
-                        <DatePicker x:Name="DateEntry" Format="dd/MM/yyyy" TextColor="Black" Margin="10,0"/>
-                    </Frame>
+                    <Button Text="📷 Fotoğraf Yükle" 
+                            BackgroundColor="#E0E0E0" 
+                            TextColor="#333" 
+                            CornerRadius="8"
+                            HeightRequest="40"/>
                 </VerticalStackLayout>
-            </Border>
+            </Frame>
 
-            <Border StrokeShape="RoundRectangle 15" StrokeThickness="0" BackgroundColor="White" Padding="15">
+            <Frame Padding="15" CornerRadius="12" BackgroundColor="White" HasShadow="True">
                 <VerticalStackLayout Spacing="10">
-                    <Label Text="📷 Görsel ve Notlar" TextColor="#1565C0" FontAttributes="Bold"/>
-
-                    <Frame BorderColor="#1565C0" BackgroundColor="#E3F2FD" CornerRadius="10" HeightRequest="100" HasShadow="False">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnPhotoClicked"/>
-                        </Frame.GestureRecognizers>
-                        
-                        <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="5">
-                            <Label Text="📸" FontSize="30" HorizontalOptions="Center"/>
-                            <Label Text="Fotoğraf Yüklemek İçin Dokun" TextColor="#1565C0" FontSize="12" FontAttributes="Bold"/>
-                        </VerticalStackLayout>
-                    </Frame>
-
-                    <Frame Padding="5" BorderColor="#E0E0E0" CornerRadius="10" BackgroundColor="#FAFAFA" HeightRequest="100">
-                        <Editor x:Name="UserNoteEditor" Placeholder="Özel notunuz..." TextColor="Black" Margin="5,0" AutoSize="TextChanges"/>
-                    </Frame>
+                    <Label Text="👋 Bulan Kişiye Not" FontAttributes="Bold" TextColor="#333"/>
+                    
+                    <Entry x:Name="NoteEntry" Placeholder="Örn: Benim için manevi değeri çok yüksek, lütfen..." />
                 </VerticalStackLayout>
-            </Border>
+            </Frame>
 
-            <Button Text="BİLDİRİMİ OLUŞTUR" 
+            <Button Text="İlanı Yayınla" 
                     Clicked="OnSaveClicked"
+                    BackgroundColor="#0056D2" 
+                    TextColor="White" 
+                    CornerRadius="10" 
+                    HeightRequest="55" 
                     FontAttributes="Bold"
-                    FontSize="16"
-                    CornerRadius="25"
-                    HeightRequest="55"
-                    Margin="0,10,0,20"
-                    BackgroundColor="#1565C0"
-                    TextColor="White"/>
-
+                    Margin="0,0,0,20"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

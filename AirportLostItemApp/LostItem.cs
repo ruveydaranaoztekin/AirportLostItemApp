@@ -1,14 +1,19 @@
-namespace AirportLostItemApp;
+using Microsoft.Maui.Graphics;
 
-public class LostItem
+namespace AirportLostItemApp
 {
-    // Eşittir (=) işaretiyle varsayılan değerler atadık.
-    // Artık sistem "boş kalırsa" diye hata vermeyecek.
-    
-    public string Icon { get; set; } = "❓";
-    public string Name { get; set; } = "İsimsiz Eşya";
-    public string Location { get; set; } = "Konum Yok";
-    public string DateLost { get; set; } = "-";
-    public string Priority { get; set; } = "Normal";
-    public string Category { get; set; } = "Diğer";
+    public class LostItem
+    {
+        public string? Name { get; set; }
+        public string? Location { get; set; }
+        public string? Date { get; set; }
+        public string? Status { get; set; }
+        public Color? StatusColor { get; set; }
+        public string? ImageUrl { get; set; }
+        public string? Category { get; set; }
+        
+        // YENİ EKLENEN DETAYLAR
+        public string? Description { get; set; } // "Yırtık mı, kırık mı?" detayları için
+        public string? NoteToFinder { get; set; } // "Bulan kişiye not"
+    }
 }

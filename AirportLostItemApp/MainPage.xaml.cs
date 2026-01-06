@@ -7,64 +7,48 @@ public partial class MainPage : ContentPage
         InitializeComponent();
     }
 
-    // Fotoğraf Ekleme Simülasyonu
-    private async void OnPhotoClicked(object sender, EventArgs e)
-    {
-        string action = await DisplayActionSheet("Fotoğraf Ekle", "İptal", null, "Kamerayı Aç", "Galeriden Seç");
-        if (action == "Kamerayı Aç" || action == "Galeriden Seç")
-        {
-            await DisplayAlert("Başarılı", "Fotoğraf dosyaya eklendi (Simülasyon)", "Tamam");
-        }
-    }
-
-    // Kaydetme İşlemi
     private async void OnSaveClicked(object sender, EventArgs e)
     {
-        // 1. Zorunlu Alan Kontrolü
-        if (string.IsNullOrWhiteSpace(NameEntry.Text) || CategoryPicker.SelectedIndex == -1)
+        // 1. Zorunlu alan kontrolü
+        if (string.IsNullOrWhiteSpace(NameEntry.Text) || string.IsNullOrWhiteSpace(LocationEntry.Text))
         {
-            await DisplayAlert("Eksik Bilgi", "Lütfen en azından 'Eşya Adı' ve 'Kategori' alanlarını doldurun.", "Tamam");
+            await DisplayAlert("Eksik Bilgi", "Lütfen en azından Eşya Adı ve Kaybolduğu Yeri giriniz.", "Tamam");
             return;
         }
 
-        // 2. Tüm Verileri Topla
-        string isim = NameEntry.Text;
-        string kategori = CategoryPicker.SelectedItem.ToString();
-        string marka = BrandEntry.Text ?? "-"; // Boşsa tire koy
-        
-        string kayipYeri = LostLocationEntry.Text ?? "Bilinmiyor";
-        string olasiYer = PossibleLocationEntry.Text ?? "-";
-        string tarih = DateEntry.Date.ToString("dd.MM.yyyy");
-        
-        string not = UserNoteEditor.Text ?? "Not yok";
-
-        // 3. Özet Mesaj Oluştur
-        string ozet = $"📦 Eşya: {isim}\n" +
-                      $"🏷️ Marka: {marka}\n" +
-                      $"📍 Kayıp Yeri: {kayipYeri}\n" +
-                      $"❓ Olası Yer: {olasiYer}\n" +
-                      $"📅 Tarih: {tarih}\n" +
-                      $"📝 Not: {not}";
-
-        // 4. Onay Ver
-        bool cevap = await DisplayAlert("Kaydı Onayla", ozet + "\n\nBilgiler doğru mu?", "Evet, Gönder", "Düzenle");
-
-        if (cevap)
+        // 2. Yeni Eşya Nesnesini Oluştur (Tüm detaylarıyla)
+        var newItem = new LostItem
         {
-            await DisplayAlert("İşlem Başarılı", "Kayıp bildiriminiz sisteme alındı. Eşleşme olduğunda size haber vereceğiz.", "Teşekkürler");
+            Name = NameEntry.Text,
+            Location = LocationEntry.Text,
             
-            // Sayfayı temizle
-            Temizle();
-        }
-    }
+            // Tarihi DatePicker'dan alıyoruz
+            Date = DateInput.Date.ToString("dd.MM.yyyy"), 
+            
+            Category = CategoryPicker.SelectedItem?.ToString() ?? "Diğer",
+            Status = RadioUrgent.IsChecked ? "ACİL" : "Normal",
+            StatusColor = RadioUrgent.IsChecked ? Colors.Red : Colors.Orange,
+            
+            // Yeni Eklediğimiz Alanlar
+            Description = DescriptionEditor.Text,
+            NoteToFinder = NoteEntry.Text,
 
-    void Temizle()
-    {
+            // Fotoğraf şimdilik temsili (gerçek telefonda galeri izni gerekir, karmaşık olmasın diye bunu kullanıyoruz)
+            ImageUrl = "https://images.unsplash.com/photo-1516961642265-531546e84af2?w=200" 
+        };
+
+        // 3. Ortak Depoya Ekle
+        ItemService.Items.Insert(0, newItem);
+
+        // 4. Formu Temizle
         NameEntry.Text = "";
-        BrandEntry.Text = "";
-        LostLocationEntry.Text = "";
-        PossibleLocationEntry.Text = "";
-        UserNoteEditor.Text = "";
-        CategoryPicker.SelectedIndex = -1;
+        LocationEntry.Text = "";
+        DescriptionEditor.Text = "";
+        NoteEntry.Text = "";
+        
+        await DisplayAlert("Başarılı", "İlanınız detaylarıyla birlikte yayınlandı!", "Tamam");
+        
+        // Vitrin sayfasına (ilk tab) otomatik geçiş yapabiliriz istersen:
+        // await Shell.Current.GoToAsync("//HomePage"); 
     }
 }
