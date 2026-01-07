@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AirportLostItemApp.FoundItemPage"
+             Title="Bulundu Bildirimi"
+             BackgroundColor="#F5F5F5">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+
+            <Frame BackgroundColor="White" CornerRadius="15" Padding="15">
+                <Grid ColumnDefinitions="80, *">
+                    <Frame CornerRadius="10" Padding="0" IsClippedToBounds="True" HeightRequest="70" WidthRequest="70">
+                        <Image Source="{Binding ImageUrl}" Aspect="AspectFill"/>
+                    </Frame>
+                    <VerticalStackLayout Grid.Column="1" Padding="15,0,0,0" VerticalOptions="Center">
+                        <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" TextColor="#333"/>
+                        <Label Text="Bu eşyayı bulduğunuzu bildiriyorsunuz." FontSize="12" TextColor="Gray"/>
+                    </VerticalStackLayout>
+                </Grid>
+            </Frame>
+
+            <Label Text="Bulunma Detayları" FontSize="18" FontAttributes="Bold" TextColor="#0056D2" Margin="0,10,0,0"/>
+
+            <Frame BackgroundColor="White" CornerRadius="15" Padding="20">
+                <VerticalStackLayout Spacing="15">
+                    
+                    <Label Text="📍 Nerede Buldunuz?" FontAttributes="Bold" TextColor="#333"/>
+                    <Entry x:Name="FoundLocationEntry" Placeholder="Örn: Gate A5 koltuklarında" />
+
+                    <Label Text="⏰ Ne Zaman Buldunuz?" FontAttributes="Bold" TextColor="#333"/>
+                    <DatePicker x:Name="FoundDatePicker" Format="dd/MM/yyyy" TextColor="#333"/>
+                    <TimePicker x:Name="FoundTimePicker" Format="HH:mm" TextColor="#333"/>
+
+                    <Label Text="📦 Eşyanın Durumu Nasıl?" FontAttributes="Bold" TextColor="#333"/>
+                    <Picker x:Name="ConditionPicker" Title="Durum Seçin">
+                        <Picker.Items>
+                            <x:String>Sağlam / Hasarsız</x:String>
+                            <x:String>Az Hasarlı / Çizik</x:String>
+                            <x:String>Kırık / Parçalanmış</x:String>
+                            <x:String>Paketinden Çıkmış</x:String>
+                        </Picker.Items>
+                    </Picker>
+
+                    <BoxView HeightRequest="1" Color="#E0E0E0" Margin="0,5"/>
+
+                    <Label Text="👮‍♂️ Nereye Teslim Ettiniz?" FontAttributes="Bold" TextColor="#333"/>
+                    <Entry x:Name="DeliveredLocationEntry" Placeholder="Örn: Terminal 1 Güvenlik Noktası" />
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <Button Text="✅ BİLDİRİMİ TAMAMLA" 
+                    Clicked="OnSubmitClicked"
+                    BackgroundColor="#2E7D32" 
+                    TextColor="White" 
+                    CornerRadius="10" 
+                    HeightRequest="55" 
+                    FontAttributes="Bold"
+                    Margin="0,0,0,20"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

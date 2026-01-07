@@ -18,7 +18,7 @@ public partial class HomePage : ContentPage
         LostItemsCollection.ItemsSource = DisplayItems;
     }
 
-    // SİHİRLİ KISIM: Sayfa her ekrana geldiğinde burası çalışır
+    // Sayfa her ekrana geldiğinde listeyi tazeler
     protected override void OnAppearing()
     {
         base.OnAppearing();
@@ -31,19 +31,45 @@ public partial class HomePage : ContentPage
         }
     }
 
-    // 1. DETAY GÖR BUTONU
-    private async void OnDetailsClicked(object sender, EventArgs e)
+    // YENİ: Sıralama Seçeneği Değiştiğinde Çalışır
+    private void OnSortChanged(object sender, EventArgs e)
     {
-        var button = sender as Button;
-        var item = button.BindingContext as LostItem;
-        
-        if (item != null)
+        var picker = sender as Picker;
+        if (picker?.SelectedItem == null) return;
+
+        string selectedOption = picker.SelectedItem.ToString();
+        List<LostItem> sortedList;
+
+        // LINQ kullanarak sıralama mantığı
+        switch (selectedOption)
         {
-            await Navigation.PushAsync(new DetailPage(item));
+            case "A-Z (İsim)":
+                sortedList = DisplayItems.OrderBy(x => x.Name).ToList();
+                break;
+            case "Aciliyet (Önce Acil olanlar)":
+                // Status "ACİL" olanları başa çekiyoruz
+                sortedList = DisplayItems.OrderByDescending(x => x.Status == "ACİL").ToList();
+                break;
+            case "En Eski (Önce)":
+                // Liste zaten varsayılan akışta eskiden yeniye doğru olabilir
+                sortedList = DisplayItems.ToList(); 
+                break;
+            case "En Yeni (Önce)":
+            default:
+                // Mevcut listeyi ters çevirerek en son ekleneni başa alırız
+                sortedList = DisplayItems.Reverse().ToList();
+                break;
+        }
+
+        // Ekranı güncellemek için koleksiyonu yenile
+        DisplayItems.Clear();
+        foreach (var item in sortedList)
+        {
+            DisplayItems.Add(item);
         }
     }
 
-    // 2. BULDUM BUTONU (Mesajsız, direkt geçiş)
+    // "BULDUM" BUTONU -> Yeni Form Sayfasına Gider
     private async void OnFoundItemClicked(object sender, EventArgs e)
     {
         var button = sender as Button;
@@ -51,11 +77,23 @@ public partial class HomePage : ContentPage
 
         if (item != null)
         {
+            await Navigation.PushAsync(new FoundItemPage(item));
+        }
+    }
+
+    // "DETAY GÖR" BUTONU -> Detay Sayfasına Gider
+    private async void OnDetailsClicked(object sender, EventArgs e)
+    {
+        var button = sender as Button;
+        var item = button.BindingContext as LostItem;
+    
+        if (item != null)
+        {
             await Navigation.PushAsync(new DetailPage(item));
         }
     }
 
-    // 3. KATEGORİ FİLTRELEME
+    // KATEGORİ FİLTRELEME
     private void OnCategoryClicked(object sender, EventArgs e)
     {
         var button = sender as Button;
@@ -63,20 +101,16 @@ public partial class HomePage : ContentPage
 
         string categoryName = button.Text.Replace("💻 ", "").Replace("🧳 ", "").Replace("🛂 ", "").Trim();
         
-        // Ekranı temizle
         DisplayItems.Clear();
 
         if (categoryName == "Tümü")
         {
-            // Ortak depodaki her şeyi geri yükle
             foreach (var item in ItemService.Items) DisplayItems.Add(item);
         }
         else
         {
-            // Sadece kategorisi uyanları yükle
             foreach (var item in ItemService.Items)
             {
-                // Kategori eşleşiyorsa ekle
                 if (item.Category == categoryName)
                 {
                     DisplayItems.Add(item);
@@ -85,13 +119,13 @@ public partial class HomePage : ContentPage
         }
     }
     
-    // Listeden bir elemana tıklanınca (Resmin üzerine vs.)
+    // Listeden bir elemana tıklanınca
     private async void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         var selectedItem = e.CurrentSelection.FirstOrDefault() as LostItem;
         if (selectedItem == null) return;
 
-        ((CollectionView)sender).SelectedItem = null; // Seçimi kaldır
+        ((CollectionView)sender).SelectedItem = null;
         await Navigation.PushAsync(new DetailPage(selectedItem));
     }
 }

@@ -5,21 +5,36 @@
              Title="Kayıp Eşyalar"
              BackgroundColor="#F5F5F5">
 
-    <Grid RowDefinitions="Auto, Auto, *">
+    <Grid RowDefinitions="Auto, Auto, Auto, *">
 
         <VerticalStackLayout Grid.Row="0" BackgroundColor="#0056D2" Padding="20,10,20,20">
             <Label Text="İstanbul Havalimanı" TextColor="#AACCEE" FontSize="12" HorizontalOptions="End"/>
             <Label Text="Kayıp Eşyalar" TextColor="White" FontSize="28" FontAttributes="Bold" Margin="0,0,0,10"/>
-            
             <Frame Padding="0" CornerRadius="10" BackgroundColor="White" HeightRequest="45" HasShadow="False">
-                <SearchBar Placeholder="Kaybolan eşyayı ara..." 
-                           BackgroundColor="Transparent" 
-                           TextColor="Black" 
-                           CancelButtonColor="Gray"/>
+                <SearchBar Placeholder="Kaybolan eşyayı ara..." BackgroundColor="Transparent" TextColor="Black" CancelButtonColor="Gray"/>
             </Frame>
         </VerticalStackLayout>
 
-        <ScrollView Grid.Row="1" Orientation="Horizontal" HorizontalScrollBarVisibility="Never" Padding="15,15,15,5">
+        <Frame Grid.Row="1" Padding="10,0" Margin="15,10,15,0" CornerRadius="10" BackgroundColor="White" HasShadow="False" BorderColor="#DDD">
+            <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                <Label Text="🔃 Sırala:" VerticalOptions="Center" FontSize="12" TextColor="Gray"/>
+                <Picker x:Name="SortPicker" 
+                        Title="Sıralama seçin" 
+                        SelectedIndexChanged="OnSortChanged" 
+                        FontSize="12" 
+                        TextColor="#0056D2"
+                        WidthRequest="220">
+                    <Picker.Items>
+                        <x:String>En Yeni (Önce)</x:String>
+                        <x:String>En Eski (Önce)</x:String>
+                        <x:String>Aciliyet (Önce Acil olanlar)</x:String>
+                        <x:String>A-Z (İsim)</x:String>
+                    </Picker.Items>
+                </Picker>
+            </HorizontalStackLayout>
+        </Frame>
+
+        <ScrollView Grid.Row="2" Orientation="Horizontal" HorizontalScrollBarVisibility="Never" Padding="15,10,15,5">
             <HorizontalStackLayout Spacing="10">
                 <Button Text="Tümü" Clicked="OnCategoryClicked" BackgroundColor="#0056D2" TextColor="White" CornerRadius="20" HeightRequest="40"/>
                 <Button Text="💻 Elektronik" Clicked="OnCategoryClicked" BackgroundColor="White" TextColor="#333" BorderColor="#DDD" BorderWidth="1" CornerRadius="20" HeightRequest="40"/>
@@ -28,7 +43,7 @@
             </HorizontalStackLayout>
         </ScrollView>
 
-        <CollectionView Grid.Row="2" 
+        <CollectionView Grid.Row="3" 
                         x:Name="LostItemsCollection"
                         SelectionMode="Single"
                         SelectionChanged="OnSelectionChanged"
@@ -36,57 +51,32 @@
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout Orientation="Vertical" ItemSpacing="15"/>
             </CollectionView.ItemsLayout>
-            
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame Margin="15,0,15,0" Padding="0" CornerRadius="15" BackgroundColor="White" HasShadow="True" BorderColor="Transparent">
                         <VerticalStackLayout>
-                            
                             <Grid ColumnDefinitions="100, *, Auto" Padding="10">
                                 <Frame Grid.Column="0" CornerRadius="10" Padding="0" IsClippedToBounds="True" HeightRequest="90" WidthRequest="90">
                                     <Image Source="{Binding ImageUrl}" Aspect="AspectFill" BackgroundColor="#EEE"/>
                                 </Frame>
-
                                 <VerticalStackLayout Grid.Column="1" Padding="10,5,0,0" VerticalOptions="Start">
                                     <Label Text="{Binding Name}" FontSize="16" FontAttributes="Bold" TextColor="#333"/>
                                     <Label Text="{Binding Location}" FontSize="13" TextColor="Gray" Margin="0,2,0,0"/>
                                     <Label Text="{Binding Date}" FontSize="12" TextColor="#AAA"/>
                                 </VerticalStackLayout>
-
                                 <Frame Grid.Column="2" VerticalOptions="Start" Padding="8,4" CornerRadius="6" BackgroundColor="{Binding StatusColor}" HasShadow="False">
                                     <Label Text="{Binding Status}" TextColor="White" FontSize="10" FontAttributes="Bold"/>
                                 </Frame>
                             </Grid>
-
                             <BoxView HeightRequest="1" Color="#F0F0F0" Margin="10,0"/>
-
                             <Grid ColumnDefinitions="*, *" Padding="10" ColumnSpacing="10">
-                                <Button Grid.Column="0" 
-                                        Text="Detay Gör" 
-                                        Clicked="OnDetailsClicked" 
-                                        BackgroundColor="#E3F2FD" 
-                                        TextColor="#1565C0" 
-                                        CornerRadius="8" 
-                                        HeightRequest="40" 
-                                        FontSize="13" 
-                                        FontAttributes="Bold"/>
-                                
-                                <Button Grid.Column="1" 
-                                        Text="✅ BULDUM" 
-                                        Clicked="OnFoundItemClicked" 
-                                        BackgroundColor="#E8F5E9" 
-                                        TextColor="#2E7D32" 
-                                        CornerRadius="8" 
-                                        HeightRequest="40" 
-                                        FontSize="13" 
-                                        FontAttributes="Bold"/>
+                                <Button Grid.Column="0" Text="Detay Gör" Clicked="OnDetailsClicked" BackgroundColor="#E3F2FD" TextColor="#1565C0" CornerRadius="8" HeightRequest="40" FontSize="13" FontAttributes="Bold"/>
+                                <Button Grid.Column="1" Text="✅ BULDUM" Clicked="OnFoundItemClicked" BackgroundColor="#E8F5E9" TextColor="#2E7D32" CornerRadius="8" HeightRequest="40" FontSize="13" FontAttributes="Bold"/>
                             </Grid>
-
                         </VerticalStackLayout>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-
     </Grid>
 </ContentPage>
